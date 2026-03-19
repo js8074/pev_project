@@ -1,0 +1,788 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0x9F61771044B6C465",
+      "device": "xc7s25csga324-1",
+      "name": "uvod",
+      "synth_flow_mode": "Hierarchical",
+      "tool_version": "2019.1",
+      "validated": "true"
+    },
+    "design_tree": {
+      "top_0": "",
+      "debounce_0": "",
+      "debounce_1": "",
+      "debounce_2": "",
+      "debounce_3": "",
+      "clk_wiz_0": "",
+      "uart_tx_byte_0": "",
+      "svga_0": "",
+      "VGA_DRAW_0": ""
+    },
+    "ports": {
+      "LED2": {
+        "direction": "O"
+      },
+      "LED3": {
+        "direction": "O"
+      },
+      "LED4": {
+        "direction": "O"
+      },
+      "LED5": {
+        "direction": "O"
+      },
+      "CLK_12MHz": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "uvod_CLK_12MHz",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "12000000"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.000",
+            "value_src": "default"
+          }
+        }
+      },
+      "BTN0": {
+        "direction": "I"
+      },
+      "BTN1": {
+        "direction": "I"
+      },
+      "BTN2": {
+        "direction": "I"
+      },
+      "BTN3": {
+        "direction": "I"
+      },
+      "RED": {
+        "direction": "O",
+        "left": "3",
+        "right": "0"
+      },
+      "GREEN": {
+        "direction": "O",
+        "left": "3",
+        "right": "0"
+      },
+      "BLUE": {
+        "direction": "O",
+        "left": "3",
+        "right": "0"
+      },
+      "HSYNC": {
+        "direction": "O"
+      },
+      "VSYNC": {
+        "direction": "O"
+      },
+      "TXF": {
+        "direction": "O"
+      }
+    },
+    "components": {
+      "top_0": {
+        "vlnv": "xilinx.com:module_ref:top:1.0",
+        "xci_name": "uvod_top_0_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "top",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "iw_clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "CLK_DOMAIN": {
+                "value": "/clk_wiz_0_clk_out1",
+                "value_src": "ip_prop"
+              },
+              "FREQ_HZ": {
+                "value": "200000000",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              }
+            }
+          },
+          "iw_btn0": {
+            "direction": "I"
+          },
+          "iw_btn1": {
+            "direction": "I"
+          },
+          "iw_btn2": {
+            "direction": "I"
+          },
+          "iw_btn3": {
+            "direction": "I"
+          },
+          "ow_led2": {
+            "direction": "O"
+          },
+          "ow_led3": {
+            "direction": "O"
+          },
+          "ow_led4": {
+            "direction": "O"
+          },
+          "ow_led5": {
+            "direction": "O"
+          },
+          "ow_tx_start": {
+            "direction": "O"
+          },
+          "ow8_tx_byte": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          },
+          "iw_tx_done": {
+            "direction": "I"
+          },
+          "ow4_red": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "ow4_green": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "ow4_blue": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "ow11_x_pos": {
+            "direction": "O",
+            "left": "10",
+            "right": "0"
+          },
+          "ow11_y_pos": {
+            "direction": "O",
+            "left": "10",
+            "right": "0"
+          }
+        }
+      },
+      "debounce_0": {
+        "vlnv": "xilinx.com:module_ref:debounce:1.0",
+        "xci_name": "uvod_debounce_0_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "debounce",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "iw_clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "CLK_DOMAIN": {
+                "value": "/clk_wiz_0_clk_out1",
+                "value_src": "ip_prop"
+              },
+              "FREQ_HZ": {
+                "value": "200000000",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              }
+            }
+          },
+          "iw_button": {
+            "direction": "I"
+          },
+          "ow_pressed": {
+            "direction": "O"
+          }
+        }
+      },
+      "debounce_1": {
+        "vlnv": "xilinx.com:module_ref:debounce:1.0",
+        "xci_name": "uvod_debounce_0_1",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "debounce",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "iw_clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "CLK_DOMAIN": {
+                "value": "/clk_wiz_0_clk_out1",
+                "value_src": "ip_prop"
+              },
+              "FREQ_HZ": {
+                "value": "200000000",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              }
+            }
+          },
+          "iw_button": {
+            "direction": "I"
+          },
+          "ow_pressed": {
+            "direction": "O"
+          }
+        }
+      },
+      "debounce_2": {
+        "vlnv": "xilinx.com:module_ref:debounce:1.0",
+        "xci_name": "uvod_debounce_1_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "debounce",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "iw_clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "CLK_DOMAIN": {
+                "value": "/clk_wiz_0_clk_out1",
+                "value_src": "ip_prop"
+              },
+              "FREQ_HZ": {
+                "value": "200000000",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              }
+            }
+          },
+          "iw_button": {
+            "direction": "I"
+          },
+          "ow_pressed": {
+            "direction": "O"
+          }
+        }
+      },
+      "debounce_3": {
+        "vlnv": "xilinx.com:module_ref:debounce:1.0",
+        "xci_name": "uvod_debounce_2_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "debounce",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "iw_clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "CLK_DOMAIN": {
+                "value": "/clk_wiz_0_clk_out1",
+                "value_src": "ip_prop"
+              },
+              "FREQ_HZ": {
+                "value": "200000000",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              }
+            }
+          },
+          "iw_button": {
+            "direction": "I"
+          },
+          "ow_pressed": {
+            "direction": "O"
+          }
+        }
+      },
+      "clk_wiz_0": {
+        "vlnv": "xilinx.com:ip:clk_wiz:6.0",
+        "xci_name": "uvod_clk_wiz_0_0",
+        "parameters": {
+          "CLKOUT1_DRIVES": {
+            "value": "BUFG"
+          },
+          "CLKOUT1_JITTER": {
+            "value": "522.440"
+          },
+          "CLKOUT1_PHASE_ERROR": {
+            "value": "613.025"
+          },
+          "CLKOUT1_REQUESTED_OUT_FREQ": {
+            "value": "200.000"
+          },
+          "CLKOUT1_USED": {
+            "value": "true"
+          },
+          "CLKOUT2_DRIVES": {
+            "value": "BUFG"
+          },
+          "CLKOUT2_JITTER": {
+            "value": "686.725"
+          },
+          "CLKOUT2_PHASE_ERROR": {
+            "value": "613.025"
+          },
+          "CLKOUT2_REQUESTED_OUT_FREQ": {
+            "value": "40.000"
+          },
+          "CLKOUT2_USED": {
+            "value": "true"
+          },
+          "CLKOUT3_DRIVES": {
+            "value": "BUFG"
+          },
+          "CLKOUT4_DRIVES": {
+            "value": "BUFG"
+          },
+          "CLKOUT5_DRIVES": {
+            "value": "BUFG"
+          },
+          "CLKOUT6_DRIVES": {
+            "value": "BUFG"
+          },
+          "CLKOUT7_DRIVES": {
+            "value": "BUFG"
+          },
+          "CLK_OUT1_PORT": {
+            "value": "CLK_200MHZ"
+          },
+          "CLK_OUT2_PORT": {
+            "value": "CLK_40MHZ"
+          },
+          "FEEDBACK_SOURCE": {
+            "value": "FDBK_AUTO"
+          },
+          "MMCM_BANDWIDTH": {
+            "value": "OPTIMIZED"
+          },
+          "MMCM_CLKFBOUT_MULT_F": {
+            "value": "50.000"
+          },
+          "MMCM_CLKOUT0_DIVIDE_F": {
+            "value": "3.000"
+          },
+          "MMCM_CLKOUT1_DIVIDE": {
+            "value": "15"
+          },
+          "MMCM_COMPENSATION": {
+            "value": "ZHOLD"
+          },
+          "NUM_OUT_CLKS": {
+            "value": "2"
+          },
+          "PRIMITIVE": {
+            "value": "MMCM"
+          },
+          "USE_LOCKED": {
+            "value": "false"
+          },
+          "USE_RESET": {
+            "value": "false"
+          }
+        }
+      },
+      "uart_tx_byte_0": {
+        "vlnv": "xilinx.com:module_ref:uart_tx_byte:1.0",
+        "xci_name": "uvod_uart_tx_byte_0_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "uart_tx_byte",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "iw_clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "CLK_DOMAIN": {
+                "value": "/clk_wiz_0_clk_out1",
+                "value_src": "ip_prop"
+              },
+              "FREQ_HZ": {
+                "value": "200000000",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              }
+            }
+          },
+          "iw_tx_start": {
+            "direction": "I"
+          },
+          "iw8_tx_byte": {
+            "direction": "I",
+            "left": "7",
+            "right": "0"
+          },
+          "ow_tx_pin": {
+            "direction": "O"
+          },
+          "ow_tx_done": {
+            "direction": "O"
+          }
+        }
+      },
+      "svga_0": {
+        "vlnv": "xilinx.com:module_ref:svga:1.0",
+        "xci_name": "uvod_svga_0_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "svga",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "iw_pix_clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "CLK_DOMAIN": {
+                "value": "/clk_wiz_0_clk_out1",
+                "value_src": "ip_prop"
+              },
+              "FREQ_HZ": {
+                "value": "40000000",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              }
+            }
+          },
+          "iw4_red": {
+            "direction": "I",
+            "left": "3",
+            "right": "0"
+          },
+          "iw4_green": {
+            "direction": "I",
+            "left": "3",
+            "right": "0"
+          },
+          "iw4_blue": {
+            "direction": "I",
+            "left": "3",
+            "right": "0"
+          },
+          "iw11_x_pos": {
+            "direction": "I",
+            "left": "10",
+            "right": "0"
+          },
+          "iw11_y_pos": {
+            "direction": "I",
+            "left": "10",
+            "right": "0"
+          },
+          "ow4_red": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "ow4_green": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "ow4_blue": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "ow11_curr_pixel_x": {
+            "direction": "O",
+            "left": "10",
+            "right": "0"
+          },
+          "ow11_curr_pixel_y": {
+            "direction": "O",
+            "left": "10",
+            "right": "0"
+          },
+          "ow_hsync": {
+            "direction": "O"
+          },
+          "ow_vsync": {
+            "direction": "O"
+          }
+        }
+      },
+      "VGA_DRAW_0": {
+        "vlnv": "xilinx.com:module_ref:VGA_DRAW:1.0",
+        "xci_name": "uvod_VGA_DRAW_0_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "VGA_DRAW",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "CLK": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "CLK_DOMAIN": {
+                "value": "/clk_wiz_0_clk_out1",
+                "value_src": "ip_prop"
+              },
+              "FREQ_HZ": {
+                "value": "40000000",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              }
+            }
+          },
+          "X_IN": {
+            "direction": "I",
+            "left": "10",
+            "right": "0"
+          },
+          "Y_IN": {
+            "direction": "I",
+            "left": "10",
+            "right": "0"
+          },
+          "R_OUT": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "G_OUT": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "B_OUT": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          }
+        }
+      }
+    },
+    "nets": {
+      "top_0_ow_led2": {
+        "ports": [
+          "top_0/ow_led2",
+          "LED2"
+        ]
+      },
+      "top_0_ow_led3": {
+        "ports": [
+          "top_0/ow_led3",
+          "LED3"
+        ]
+      },
+      "top_0_ow_led4": {
+        "ports": [
+          "top_0/ow_led4",
+          "LED4"
+        ]
+      },
+      "top_0_ow_led5": {
+        "ports": [
+          "top_0/ow_led5",
+          "LED5"
+        ]
+      },
+      "debounce_0_ow_pressed": {
+        "ports": [
+          "debounce_0/ow_pressed",
+          "top_0/iw_btn0"
+        ]
+      },
+      "debounce_1_ow_pressed": {
+        "ports": [
+          "debounce_1/ow_pressed",
+          "top_0/iw_btn1"
+        ]
+      },
+      "debounce_2_ow_pressed": {
+        "ports": [
+          "debounce_2/ow_pressed",
+          "top_0/iw_btn2"
+        ]
+      },
+      "debounce_3_ow_pressed": {
+        "ports": [
+          "debounce_3/ow_pressed",
+          "top_0/iw_btn3"
+        ]
+      },
+      "iw_button_0_1": {
+        "ports": [
+          "BTN0",
+          "debounce_0/iw_button"
+        ]
+      },
+      "iw_button_1_1": {
+        "ports": [
+          "BTN1",
+          "debounce_1/iw_button"
+        ]
+      },
+      "iw_button_2_1": {
+        "ports": [
+          "BTN2",
+          "debounce_2/iw_button"
+        ]
+      },
+      "iw_button_3_1": {
+        "ports": [
+          "BTN3",
+          "debounce_3/iw_button"
+        ]
+      },
+      "CLK_12MHz_1": {
+        "ports": [
+          "CLK_12MHz",
+          "clk_wiz_0/clk_in1"
+        ]
+      },
+      "clk_wiz_0_clk_out1": {
+        "ports": [
+          "clk_wiz_0/CLK_200MHZ",
+          "debounce_0/iw_clk",
+          "debounce_1/iw_clk",
+          "debounce_2/iw_clk",
+          "debounce_3/iw_clk",
+          "top_0/iw_clk",
+          "uart_tx_byte_0/iw_clk"
+        ]
+      },
+      "top_0_ow4_red": {
+        "ports": [
+          "top_0/ow4_red",
+          "svga_0/iw4_red"
+        ]
+      },
+      "top_0_ow4_green": {
+        "ports": [
+          "top_0/ow4_green",
+          "svga_0/iw4_green"
+        ]
+      },
+      "top_0_ow4_blue": {
+        "ports": [
+          "top_0/ow4_blue",
+          "svga_0/iw4_blue"
+        ]
+      },
+      "top_0_ow11_x_pos": {
+        "ports": [
+          "top_0/ow11_x_pos",
+          "svga_0/iw11_x_pos"
+        ]
+      },
+      "top_0_ow11_y_pos": {
+        "ports": [
+          "top_0/ow11_y_pos",
+          "svga_0/iw11_y_pos"
+        ]
+      },
+      "top_0_ow8_tx_byte": {
+        "ports": [
+          "top_0/ow8_tx_byte",
+          "uart_tx_byte_0/iw8_tx_byte"
+        ]
+      },
+      "top_0_ow_tx_start": {
+        "ports": [
+          "top_0/ow_tx_start",
+          "uart_tx_byte_0/iw_tx_start"
+        ]
+      },
+      "svga_0_ow_vsync": {
+        "ports": [
+          "svga_0/ow_vsync",
+          "VSYNC"
+        ]
+      },
+      "uart_tx_byte_0_ow_tx_pin": {
+        "ports": [
+          "uart_tx_byte_0/ow_tx_pin",
+          "TXF"
+        ]
+      },
+      "uart_tx_byte_0_ow_tx_done": {
+        "ports": [
+          "uart_tx_byte_0/ow_tx_done",
+          "top_0/iw_tx_done"
+        ]
+      },
+      "clk_wiz_0_CLK_40MHZ": {
+        "ports": [
+          "clk_wiz_0/CLK_40MHZ",
+          "svga_0/iw_pix_clk",
+          "VGA_DRAW_0/CLK"
+        ]
+      },
+      "svga_0_ow_cursor_x": {
+        "ports": [
+          "svga_0/ow11_curr_pixel_x",
+          "VGA_DRAW_0/X_IN"
+        ]
+      },
+      "VGA_DRAW_0_G_OUT": {
+        "ports": [
+          "VGA_DRAW_0/G_OUT",
+          "GREEN"
+        ]
+      },
+      "VGA_DRAW_0_B_OUT": {
+        "ports": [
+          "VGA_DRAW_0/B_OUT",
+          "BLUE"
+        ]
+      },
+      "svga_0_ow_hsync": {
+        "ports": [
+          "svga_0/ow_hsync",
+          "HSYNC"
+        ]
+      },
+      "svga_0_ow_cursor_y": {
+        "ports": [
+          "svga_0/ow11_curr_pixel_y",
+          "VGA_DRAW_0/Y_IN"
+        ]
+      },
+      "VGA_DRAW_0_R_OUT": {
+        "ports": [
+          "VGA_DRAW_0/R_OUT",
+          "RED"
+        ]
+      }
+    }
+  }
+}
