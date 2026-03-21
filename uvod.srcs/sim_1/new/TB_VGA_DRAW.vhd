@@ -23,6 +23,8 @@ architecture Behavioral of TB_VGA_DRAW is
 
 	-- Stops simulation when = '1'
 	signal SIM_STOP : std_logic := '0';
+
+	type OUT_FILE is file of character;
 	
 	-- Writes an integer number into 4 bytes (little endian). For BMP purposes
 	procedure WRITE_VAL_4BYTES(file WR_FILE : out_file; constant VAL_IN : in integer) is
@@ -38,7 +40,7 @@ architecture Behavioral of TB_VGA_DRAW is
 
 	-- Procedure writes an image file
 	procedure WRITE_BMP is
-		type OUT_FILE is file of character;
+		
 		file BMP_FILE : OUT_FILE;
 		constant BMP_FILE_NAME : string := "output_image.bmp";
 
@@ -77,7 +79,7 @@ architecture Behavioral of TB_VGA_DRAW is
 		
 		-- Image height. Set to negative image height. 
 		-- Needed to avoid image being upside down.
-		WRITE_VAL_4BYTES(BMP_FILE, Y_RES);
+		WRITE_VAL_4BYTES(BMP_FILE, - Y_RES);
 
 		-- Reserved (planes)
 		write(BMP_FILE, character'val(1)); 
