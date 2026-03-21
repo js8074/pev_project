@@ -11,6 +11,8 @@ package PKG_VGA_DRAW is
 	constant CLK_PERIOD : time := 25  ns;
   constant X_RES : integer := 800;
   constant Y_RES : integer := 600;
+  constant X_RES_FULL : integer := 1056;
+  constant Y_RES_FULL : integer := 628;
   constant RECT_WIDTH : integer := 96;
   constant RECT_HEIGHT : integer := 32;
 	constant Y_NUM_RECTS : integer := 4;

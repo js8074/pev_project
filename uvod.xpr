@@ -33,7 +33,7 @@
     <Option Name="DSAVendor" Val="xilinx"/>
     <Option Name="DSANumComputeUnits" Val="60"/>
     <Option Name="WTXSimLaunchSim" Val="5"/>
-    <Option Name="WTModelSimLaunchSim" Val="2"/>
+    <Option Name="WTModelSimLaunchSim" Val="5"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
     <Option Name="WTVcsLaunchSim" Val="0"/>
@@ -112,26 +112,26 @@
         <CompFileExtendedInfo CompFileName="uvod.bd" FileRelPathName="ip/uvod_debounce_0_1/uvod_debounce_0_1.xci">
           <Proxy FileSetName="uvod_debounce_0_1"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="uvod.bd" FileRelPathName="ip/uvod_uart_tx_byte_0_0/uvod_uart_tx_byte_0_0.xci">
-          <Proxy FileSetName="uvod_uart_tx_byte_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="uvod.bd" FileRelPathName="ip/uvod_VGA_DRAW_0_0/uvod_VGA_DRAW_0_0.xci">
-          <Proxy FileSetName="uvod_VGA_DRAW_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="uvod.bd" FileRelPathName="ip/uvod_debounce_0_0/uvod_debounce_0_0.xci">
-          <Proxy FileSetName="uvod_debounce_0_0"/>
-        </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="uvod.bd" FileRelPathName="ip/uvod_debounce_1_0/uvod_debounce_1_0.xci">
           <Proxy FileSetName="uvod_debounce_1_0"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="uvod.bd" FileRelPathName="ip/uvod_clk_wiz_0_0/uvod_clk_wiz_0_0.xci">
           <Proxy FileSetName="uvod_clk_wiz_0_0"/>
         </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="uvod.bd" FileRelPathName="ip/uvod_debounce_2_0/uvod_debounce_2_0.xci">
+          <Proxy FileSetName="uvod_debounce_2_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="uvod.bd" FileRelPathName="ip/uvod_debounce_0_0/uvod_debounce_0_0.xci">
+          <Proxy FileSetName="uvod_debounce_0_0"/>
+        </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="uvod.bd" FileRelPathName="ip/uvod_svga_0_0/uvod_svga_0_0.xci">
           <Proxy FileSetName="uvod_svga_0_0"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="uvod.bd" FileRelPathName="ip/uvod_debounce_2_0/uvod_debounce_2_0.xci">
-          <Proxy FileSetName="uvod_debounce_2_0"/>
+        <CompFileExtendedInfo CompFileName="uvod.bd" FileRelPathName="ip/uvod_uart_tx_byte_0_0/uvod_uart_tx_byte_0_0.xci">
+          <Proxy FileSetName="uvod_uart_tx_byte_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="uvod.bd" FileRelPathName="ip/uvod_VGA_DRAW_0_0/uvod_VGA_DRAW_0_0.xci">
+          <Proxy FileSetName="uvod_VGA_DRAW_0_0"/>
         </CompFileExtendedInfo>
       </File>
       <File Path="$PSRCDIR/sources_1/bd/uvod/hdl/uvod_wrapper.v">
@@ -348,9 +348,7 @@
     </Run>
     <Run Id="uvod_VGA_DRAW_0_0_synth_1" Type="Ft3:Synth" SrcSet="uvod_VGA_DRAW_0_0" Part="xc7s25csga324-1" ConstrsSet="uvod_VGA_DRAW_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/uvod_VGA_DRAW_0_0_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -506,9 +504,7 @@
     </Run>
     <Run Id="uvod_VGA_DRAW_0_0_impl_1" Type="Ft2:EntireDesign" Part="xc7s25csga324-1" ConstrsSet="uvod_VGA_DRAW_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="uvod_VGA_DRAW_0_0_synth_1" IncludeInArchive="false" GenFullBitstream="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
