@@ -11,8 +11,14 @@ module svga(
     input wire[3:0] iw4_green,
     input wire[3:0] iw4_blue,
     
+    input wire[3:0] iw4_result_left,
+    input wire[3:0] iw4_result_right,
+    
     input wire[10:0] iw11_x_pos,
     input wire[10:0] iw11_y_pos,
+    
+    input wire[10:0] iw11_block_left_pos,
+    input wire[10:0] iw11_block_right_pos,
     
     //*****************************************************************
     
@@ -20,22 +26,22 @@ module svga(
     output wire[3:0] ow4_green,
     output wire[3:0] ow4_blue,
     
-    // output wire[10:0] ow_cursor_x,
-    // output wire[10:0] ow_cursor_y,
-
-    output wire[10:0] ow11_curr_pixel_x,
-    output wire[10:0] ow11_curr_pixel_y,
-
     output wire ow_hsync,           //Horizontal sync
     output wire ow_vsync);          //Vertical sync
-
-    
     
 
     //*****************************************************************
     // Cursor
     //*****************************************************************
     localparam CursorSize = 10;
+    localparam BlockWidth = 10;
+    localparam BlockHeight = 100;
+    localparam BlockDistance = 10;
+    localparam BlockMargin = 5;
+    localparam PositionDisplayX = 340;
+    localparam WidthDisplayX = 40;
+    localparam PositionDisplayY = 40;
+    localparam WidthDisplayY = 60;
     
     //*****************************************************************
     // SVGA 800 x 600
@@ -51,23 +57,6 @@ module svga(
     localparam Vs =    4;
     localparam Vb =   23;
     localparam Vt =  628;
-    
-    //*****************************************************************
-    // VGA 640 x 480
-    //*****************************************************************
-    /*
-    localparam Ha = 640;
-    localparam Hf =  16;
-    localparam Hs =  96;
-    localparam Hb =  48;
-	localparam Ht = 800;
-	
-	localparam Va =  480;
-    localparam Vf =   10;
-    localparam Vs =    2;
-    localparam Vb =   33;
-    localparam Vt =  525;
-    */
     
     //*****************************************************************
     //*****************************************************************
@@ -86,6 +75,20 @@ module svga(
     
     wire w_hactive;
     wire w_vactive;
+    
+    reg [0:39] zero [0:59];
+    reg [0:39] one [0:59];
+    reg [0:39] two [0:59];
+    reg [0:39] three [0:59];
+    reg [0:39] four [0:59];
+    reg [0:39] five [0:59];
+    reg [0:39] six [0:59];
+    reg [0:39] seven [0:59];
+    reg [0:39] eight [0:59];
+    reg [0:39] nine [0:59];
+    
+    reg [0:39] r40x60_result_left [0:59];
+    reg [0:39] r40x60_result_right [0:59];
     
     
     //*****************************************************************    
@@ -119,6 +122,17 @@ module svga(
         
         r11_active_x <= 1;
         r11_active_y <= 1; 
+        
+        $readmemb("zero.mem", zero);
+        $readmemb("one.mem", one);
+        $readmemb("two.mem", two);
+        $readmemb("three.mem", three);
+        $readmemb("four.mem", four);
+        $readmemb("five.mem", five);
+        $readmemb("six.mem", six);
+        $readmemb("seven.mem", seven);
+        $readmemb("eight.mem", eight);
+        $readmemb("nine.mem", nine);
     end
     
     
@@ -132,6 +146,285 @@ module svga(
             r4_green <= 0;    
             r4_blue  <= 0;  
         end 
+        
+        else if( ((r11_active_x >= BlockDistance) && (r11_active_x < (BlockDistance + BlockWidth))) && ((r11_active_y >= iw11_block_left_pos) && (r11_active_y < (iw11_block_left_pos + BlockHeight)))  ) begin
+            
+            r4_red   <= 0;      
+            r4_green <= 0;    
+            r4_blue  <= 0;  
+        end 
+        
+        else if( ((r11_active_x >= (Ha - BlockDistance - BlockWidth)) && (r11_active_x < (Ha - BlockDistance))) && ((r11_active_y >= iw11_block_right_pos) && (r11_active_y < (iw11_block_right_pos + BlockHeight)))  ) begin
+            
+            r4_red   <= 0;      
+            r4_green <= 0;    
+            r4_blue  <= 0;  
+        end
+        
+        else if((r11_active_y <= BlockMargin) || (r11_active_y >= (Va - BlockMargin))  ) begin
+            
+            r4_red   <= 5;      
+            r4_green <= 5;    
+            r4_blue  <= 5;  
+        end
+        
+        else if((r11_active_x > ((Ha/2)-5)) && (r11_active_x <= ((Ha/2)+5)) && (r11_active_y > (PositionDisplayY+10)) && (r11_active_y <= (PositionDisplayY + 20))  ) begin
+            r4_red   <= 0;      
+            r4_green <= 0;    
+            r4_blue  <= 0;
+        end
+        
+        else if((r11_active_x > ((Ha/2)-5)) && (r11_active_x <= ((Ha/2)+5)) && (r11_active_y > (PositionDisplayY+40)) && (r11_active_y <= (PositionDisplayY + 50))  ) begin
+            r4_red   <= 0;      
+            r4_green <= 0;    
+            r4_blue  <= 0;
+        end
+        
+        else if((r11_active_x > PositionDisplayX) && (r11_active_x <= (PositionDisplayX + WidthDisplayX)) && (r11_active_y > PositionDisplayY) && (r11_active_y <= (PositionDisplayY + WidthDisplayY))  ) begin
+            if (iw4_result_left == 0) begin
+                if (zero[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_left == 1) begin
+                if (one[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_left == 2) begin
+                if (two[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_left == 3) begin
+                if (three[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end   
+            else if (iw4_result_left == 4) begin
+                if (four[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_left == 5) begin
+                if (five[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_left == 6) begin
+                if (six[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_left == 7) begin
+                if (seven[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_left == 8) begin
+                if (eight[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_left == 9) begin
+                if (nine[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end 
+            end
+        end
+        
+        else if((r11_active_x > (PositionDisplayX + 2*WidthDisplayX)) && (r11_active_x <= (PositionDisplayX + 3*WidthDisplayX)) && (r11_active_y > PositionDisplayY) && (r11_active_y <= (PositionDisplayY + WidthDisplayY))  ) begin
+            if (iw4_result_right == 0) begin
+                if (zero[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 2*WidthDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_right == 1) begin
+                if (one[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 2*WidthDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_right == 2) begin
+                if (two[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 2*WidthDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_right == 3) begin
+                if (three[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 2*WidthDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end   
+            else if (iw4_result_right == 4) begin
+                if (four[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 2*WidthDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_right == 5) begin
+                if (five[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 2*WidthDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_right == 6) begin
+                if (six[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 2*WidthDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_right == 7) begin
+                if (seven[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 2*WidthDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_right == 8) begin
+                if (eight[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 2*WidthDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else if (iw4_result_right == 9) begin
+                if (nine[r11_active_y - PositionDisplayY - 1][r11_active_x - PositionDisplayX - 2*WidthDisplayX - 1]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end 
+            end
+        end
             
         //*****************************************************************
             
@@ -150,7 +443,7 @@ module svga(
         if( r11_h_count < Ht ) begin
             r11_h_count <= r11_h_count + 1;
             
-            if( w_hactive == 1 )
+           if( w_hactive == 1 )
                 r11_active_x <= r11_active_x + 1;
         end
    
@@ -181,8 +474,5 @@ module svga(
             end        
         end
     end
-
-assign ow11_curr_pixel_x = r11_active_x;
-assign ow11_curr_pixel_y = r11_active_y;
-
+    
 endmodule

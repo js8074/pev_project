@@ -63,7 +63,17 @@ set_property -dict {PACKAGE_PIN P14 IOSTANDARD LVCMOS33} [get_ports HSYNC]
 set_property -dict {PACKAGE_PIN P15 IOSTANDARD LVCMOS33} [get_ports VSYNC]
 
 ## JD: PMOD-I2C RH/T    PMOD PINS 1-7
-set_property -dict { PACKAGE_PIN V13   IOSTANDARD LVCMOS33 } [get_ports { SCL }];       #JD3/CK_IO31
-set_property -dict { PACKAGE_PIN T12   IOSTANDARD LVCMOS33 } [get_ports { SDA }];       #JD4/CK_IO30
+# set_property -dict { PACKAGE_PIN V13   IOSTANDARD LVCMOS33 } [get_ports { SCL }];       #JD3/CK_IO31
+# set_property -dict { PACKAGE_PIN T12   IOSTANDARD LVCMOS33 } [get_ports { SDA }];       #JD4/CK_IO30
+
+set_property -dict { PACKAGE_PIN V15 IOSTANDARD LVCMOS33 } [get_ports { MATRIX_ROW[3] }];       
+set_property -dict { PACKAGE_PIN U12 IOSTANDARD LVCMOS33 } [get_ports { MATRIX_ROW[2] }];       
+set_property -dict { PACKAGE_PIN V13 IOSTANDARD LVCMOS33 } [get_ports { MATRIX_ROW[1] }];       
+set_property -dict { PACKAGE_PIN T12 IOSTANDARD LVCMOS33 } [get_ports { MATRIX_ROW[0] }];       
+
+set_property -dict { PACKAGE_PIN T13 IOSTANDARD LVCMOS33 } [get_ports { MATRIX_COL[3] }];       
+set_property -dict { PACKAGE_PIN R11 IOSTANDARD LVCMOS33 } [get_ports { MATRIX_COL[2] }];       
+set_property -dict { PACKAGE_PIN T11 IOSTANDARD LVCMOS33 } [get_ports { MATRIX_COL[1] }];       
+set_property -dict { PACKAGE_PIN U11 IOSTANDARD LVCMOS33 } [get_ports { MATRIX_COL[0] }];       
 
 

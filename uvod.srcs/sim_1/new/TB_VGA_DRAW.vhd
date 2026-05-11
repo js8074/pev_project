@@ -15,11 +15,25 @@ architecture Behavioral of TB_VGA_DRAW is
 	signal CLK_UUT 	: std_logic 										:= '0';
 	signal X_IN_UUT : std_logic_vector(10 downto 0) := (others => '0');
 	signal Y_IN_UUT : std_logic_vector(10 downto 0) := (others => '0');
+		signal BUTTONS_IN_UUT : std_logic_vector(15 downto 0) := (others => '0');
+		signal BTN_PRESS_VALID_IN_UUT : std_logic;
+		signal BTN_RELEASE_VALID_IN_UUT : std_logic;
 	
 	-- UUT outputs
 	signal R_OUT_UUT : std_logic_vector(3 downto 0);
 	signal G_OUT_UUT : std_logic_vector(3 downto 0);
 	signal B_OUT_UUT : std_logic_vector(3 downto 0);
+
+	signal	CLK_5M_UUT2 : std_logic := '0';
+	signal	ROWS_IN_UUT2 : std_logic_vector(3 downto 0) := (others => '1');
+	signal	COLUMNS_OUT_UUT2 : std_logic_vector(3 downto 0);
+	signal	BUTTONS_OUT_UUT2 : std_logic_vector(15 downto 0);
+	signal	t2_UUT2 : std_logic;
+	signal	t3_UUT2 : std_logic;
+	signal	t4_UUT2 : std_logic;
+	signal	t1_UUT2 : std_logic;
+	signal	VALID_PRESS_OUT_UUT : std_logic;
+	signal	VALID_RELEASE_OUT_UUT : std_logic;
 
 	-- Stops simulation when = '1'
 	signal SIM_STOP : std_logic := '0';
@@ -47,6 +61,8 @@ architecture Behavioral of TB_VGA_DRAW is
 		constant NON_PIC_BYTES : integer := 54;
 		constant INFO_HEADER_SIZE : integer := 40;
 		constant BYTES_PER_PIXEL : integer := 2;
+		variable V_8BITS : unsigned(7 downto 0);
+		variable tmp : std_logic_vector(7 downto 0);
 	begin 
 		
 		-- Opens image file
@@ -126,8 +142,13 @@ architecture Behavioral of TB_VGA_DRAW is
 
 			-- Writes pixels if in visible area
 			if (unsigned(X_IN_UUT) < X_RES) and (unsigned(Y_IN_UUT) < Y_RES) then
-				write(BMP_FILE, character'val(to_integer(unsigned(G_OUT_UUT(1 downto 0) & '0' & B_OUT_UUT & '0'))));
-				write(BMP_FILE, character'val(to_integer(unsigned('0' & R_OUT_UUT & '0' & G_OUT_UUT(3 downto 2) ))));
+				tmp := G_OUT_UUT(1 downto 0) & '0' & B_OUT_UUT & '0';
+				V_8BITS := unsigned(tmp);
+				write(BMP_FILE, character'val(to_integer(V_8BITS)));
+
+				tmp := '0' & R_OUT_UUT & '0' & G_OUT_UUT(3 downto 2);
+				V_8BITS := unsigned(tmp);
+				write(BMP_FILE, character'val(to_integer(V_8BITS)));
 			end if;
 
 		end loop;
@@ -144,7 +165,9 @@ begin
 
 	-- Initializes simulation 
 	INIT_SIM : process
+	variable abc : std_logic;
 	begin 
+	-- abc := "hello";
 		-- Starts vunit runner
 		test_runner_setup(runner, runner_cfg);
 
@@ -164,10 +187,31 @@ begin
 		CLK  	=> CLK_UUT,
 		X_IN 	=> X_IN_UUT,
 		Y_IN 	=> Y_IN_UUT,
+		BUTTONS_IN 	=> BUTTONS_IN_UUT,
+		BTN_RELEASE_VALID_IN 	=> BTN_RELEASE_VALID_IN_UUT,
+		BTN_PRESS_VALID_IN 	=> BTN_PRESS_VALID_IN_UUT,
 		R_OUT => R_OUT_UUT,
 		G_OUT => G_OUT_UUT,
 		B_OUT => B_OUT_UUT
 	);
+
+	-- Component instantiation
+	UUT2 : entity work.BUTTON_MATRIX(RTL)
+	port map (
+		CLK_5M		=> CLK_5M_UUT2		,
+		CLK_40M		=> CLK_UUT		,
+		ROWS_IN		=> ROWS_IN_UUT2		,
+		COLUMNS_OUT	=> COLUMNS_OUT_UUT2	,
+		BUTTONS_OUT	=> BUTTONS_OUT_UUT2	,
+		VALID_PRESS_OUT	=> VALID_PRESS_OUT_UUT,	
+		VALID_RELEASE_OUT	=> VALID_RELEASE_OUT_UUT
+	);
+	
+	
+	CLK_5M_UUT2 	<= 		not CLK_5M_UUT2 after 200 ns; 
+	ROWS_IN_UUT2 <= "0111" when ((COLUMNS_OUT_UUT2 = "0111") and (now > 5 ms) and (now < 6 ms)) 
+			   else "1011" when ((COLUMNS_OUT_UUT2 = "1101") and (now > 6.3 ms) and (now < 7.3 ms))
+			   	else "1111";
 
 	-- Clock stimulus
 	CLK_UUT <= not(CLK_UUT) after CLK_PERIOD / 2;
