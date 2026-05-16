@@ -35,6 +35,19 @@ architecture Behavioral of TB_VGA_DRAW is
 	signal	VALID_PRESS_OUT_UUT : std_logic;
 	signal	VALID_RELEASE_OUT_UUT : std_logic;
 
+	signal STATE_IN_UUT : std_logic_vector(1 downto 0) := "01";
+	signal DIR_X_UUT : std_logic := '1';
+	signal DIR_Y_UUT : std_logic := '1';
+	signal LEFT_SCORE_IN_UUT : 	std_logic_vector(3 downto 0 ) := (others => '0');
+	signal RIGHT_SCORE_IN_UUT : std_logic_vector(3 downto 0 ) := (others => '0');
+	signal BALL_X_IN_UUT : 		std_logic_vector(10 downto 0 ) := (others => '0');
+	signal BALL_Y_IN_UUT : 		std_logic_vector(10 downto 0 ) := (others => '0');
+	signal BLOCK_LEFT_IN_UUT : 	std_logic_vector(10 downto 0 ) := (others => '0');
+	signal BLOCK_RIGHT_IN_UUT : std_logic_vector(10 downto 0 ) := (others => '0');
+	signal R_IN_UUT : 			std_logic_vector(3 downto 0 ) := (others => '0');
+	signal G_IN_UUT : 			std_logic_vector(3 downto 0 ) := (others => '0');
+	signal B_IN_UUT : 			std_logic_vector(3 downto 0 ) := (others => '0');
+
 	-- Stops simulation when = '1'
 	signal SIM_STOP : std_logic := '0';
 
@@ -163,6 +176,7 @@ architecture Behavioral of TB_VGA_DRAW is
 	
 begin
 
+
 	-- Initializes simulation 
 	INIT_SIM : process
 	variable abc : std_logic;
@@ -192,7 +206,21 @@ begin
 		BTN_PRESS_VALID_IN 	=> BTN_PRESS_VALID_IN_UUT,
 		R_OUT => R_OUT_UUT,
 		G_OUT => G_OUT_UUT,
-		B_OUT => B_OUT_UUT
+		B_OUT => B_OUT_UUT,
+
+		
+    	STATE_IN				=> STATE_IN_UUT,
+    	DIR_X				=> DIR_X_UUT,
+    	DIR_Y				=> DIR_Y_UUT,
+    	LEFT_SCORE_IN		=> LEFT_SCORE_IN_UUT,
+    	RIGHT_SCORE_IN		=> RIGHT_SCORE_IN_UUT,
+    	BALL_X_IN			=> BALL_X_IN_UUT,
+    	BALL_Y_IN			=> BALL_Y_IN_UUT,
+    	BLOCK_LEFT_IN		=> BLOCK_LEFT_IN_UUT,
+    	BLOCK_RIGHT_IN		=> BLOCK_RIGHT_IN_UUT,
+    	R_IN				=> R_IN_UUT,
+    	G_IN				=> G_IN_UUT,
+    	B_IN				=> B_IN_UUT
 	);
 
 	-- Component instantiation

@@ -24,6 +24,7 @@ module top(
     output wire[3:0] ow4_red,
     output wire[3:0] ow4_green,
     output wire[3:0] ow4_blue,
+    output wire[1:0] ow2_State,
     
     output wire[3:0] ow4_result_left,
     output wire[3:0] ow4_result_right,
@@ -32,7 +33,11 @@ module top(
     output wire[10:0] ow11_y_pos,
     
     output wire[10:0] ow11_block_left_pos,
-    output wire[10:0] ow11_block_right_pos);
+    output wire[10:0] ow11_block_right_pos,
+    
+    output wire ow_DirX,
+    output wire ow_DirY
+);
     
     //*****************************************************************
     //*****************************************************************
@@ -99,6 +104,8 @@ module top(
     assign ow4_green = r4_green;
     assign ow4_blue  = r4_blue;
     
+    assign ow2_State = State;
+    
     assign ow4_result_left = r4_result_left;
     assign ow4_result_right = r4_result_right;
     
@@ -107,6 +114,9 @@ module top(
     
     assign ow11_block_left_pos = r11_block_left_pos;
     assign ow11_block_right_pos = r11_block_right_pos;
+
+    assign ow_DirX = DirX;
+    assign ow_DirY = DirY;
     
     //*****************************************************************
     //*****************************************************************

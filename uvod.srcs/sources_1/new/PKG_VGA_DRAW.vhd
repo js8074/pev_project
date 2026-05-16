@@ -134,10 +134,17 @@ package PKG_VGA_DRAW is
   constant B_BEHAVE : T_CHNL_BEHAVE_ARR := (ZERO, ZERO, RAMP_UP, FULL, FULL, RAMP_DOWN);
 
 	function LOG2_DISCRETE(VAL_IN : integer) return integer;
-	procedure DRAW_GRADIENTS (signal STATE_IN : in T_CHNL_BEHAVE; signal X_CURSOR : in std_logic_vector; signal COL_OUT : inout std_logic_vector); 
-	function LIGHTEN(COLOR : std_logic_vector; VALUE : std_logic_vector) return std_logic_vector;
-	function DARKEN(COLOR : std_logic_vector; VALUE : std_logic_vector) return std_logic_vector;
-	function SET_BRIGHTNESS(COLOR : std_logic_vector; VALUE : std_logic_vector; LIGHT_nDARK : std_logic; ENABLE : std_logic) return std_logic_vector;
+	procedure DRAW_GRADIENTS (signal STATE_IN : in T_CHNL_BEHAVE; 
+                            signal X_CURSOR : in std_logic_vector; 
+                            signal COL_OUT : inout std_logic_vector); 
+	function LIGHTEN(COLOR : std_logic_vector; VALUE : std_logic_vector) 
+                                          return std_logic_vector;
+	function DARKEN(COLOR : std_logic_vector; VALUE : std_logic_vector) 
+                                            return std_logic_vector;
+	function SET_BRIGHTNESS(COLOR : std_logic_vector; 
+                          VALUE : std_logic_vector; 
+                          LIGHT_nDARK : std_logic; 
+                          ENABLE : std_logic) return std_logic_vector;
 
   type fprint_arr is array (natural range <>) of integer range 0 to num_symbols;
   function SPACE_FILL(NUM : integer) return string;
@@ -199,7 +206,9 @@ package body PKG_VGA_DRAW is
     y_mod   := unsigned(Y_IN(3 downto 0));  
     
 
-    if (to_integer(cur_idx) <= (SIZE-1)) and (to_integer(cur_idy) = LINE_NUM) and (y_mod <= (font_px_height-1)) then 
+    if (to_integer(cur_idx) <= (SIZE-1)) 
+        and (to_integer(cur_idy) = LINE_NUM) 
+        and (y_mod <= (font_px_height-1)) then 
       
       id      := ids(to_integer(cur_idx));
       strip   := vga_table(id)(to_integer(y_mod));

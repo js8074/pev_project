@@ -11,6 +11,8 @@ module svga(
     input wire[3:0] iw4_green,
     input wire[3:0] iw4_blue,
     
+    input wire[1:0] iw2_State,
+    
     input wire[3:0] iw4_result_left,
     input wire[3:0] iw4_result_right,
     
@@ -25,6 +27,9 @@ module svga(
     output wire[3:0] ow4_red,
     output wire[3:0] ow4_green,
     output wire[3:0] ow4_blue,
+
+    output wire[10:0] ow11_curr_pixel_x,
+    output wire[10:0] ow11_curr_pixel_y,
     
     output wire ow_hsync,           //Horizontal sync
     output wire ow_vsync);          //Vertical sync
@@ -62,7 +67,9 @@ module svga(
     //*****************************************************************
     reg[3:0] r4_red;      
     reg[3:0] r4_green;    
-    reg[3:0] r4_blue;      
+    reg[3:0] r4_blue;
+    
+    reg[1:0] State;      
     
     reg[10:0] r11_h_count;
     reg[10:0] r11_v_count;
@@ -87,6 +94,9 @@ module svga(
     reg [0:39] eight [0:59];
     reg [0:39] nine [0:59];
     
+    reg [0:57] start [0:14];
+    reg [0:45] gameover [0:31];
+    
     reg [0:39] r40x60_result_left [0:59];
     reg [0:39] r40x60_result_right [0:59];
     
@@ -107,6 +117,7 @@ module svga(
     assign ow4_red   = (w_hactive & w_vactive) ? r4_red   : 0;
     assign ow4_green = (w_hactive & w_vactive) ? r4_green : 0;
     assign ow4_blue  = (w_hactive & w_vactive) ? r4_blue  : 0;
+
    
    
     //*****************************************************************
@@ -133,13 +144,55 @@ module svga(
         $readmemb("seven.mem", seven);
         $readmemb("eight.mem", eight);
         $readmemb("nine.mem", nine);
+        $readmemb("start.mem", start);
+        $readmemb("gameover.mem", gameover);
     end
     
     
     //*****************************************************************
     //*****************************************************************
     always @ ( posedge iw_pix_clk ) begin
-    
+        State <= iw2_State;
+        
+        if (State == 0) begin
+            if( (r11_active_x >= 284 && r11_active_x < (284 + 232)) && (r11_active_y >= 270 && r11_active_y < (270 + 60))  ) begin
+                if (start[(r11_active_y - 270)/4][(r11_active_x - 284)/4]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else begin
+            r4_red   <= iw4_red;      
+            r4_green <= iw4_green;    
+            r4_blue  <= iw4_blue;    
+            end 
+        end
+        if (State == 2) begin
+            if( (r11_active_x >= 308 && r11_active_x < (308 + 184)) && (r11_active_y >= 236 && r11_active_y < (236 + 128))  ) begin
+                if (gameover[(r11_active_y - 236)/4][(r11_active_x - 308)/4]) begin
+                    r4_red   <= 0;      
+                    r4_green <= 0;    
+                    r4_blue  <= 0; 
+                end
+                else begin
+                    r4_red   <= iw4_red;      
+                    r4_green <= iw4_green;    
+                    r4_blue  <= iw4_blue;    
+                end
+            end
+            else begin
+            r4_red   <= iw4_red;      
+            r4_green <= iw4_green;    
+            r4_blue  <= iw4_blue;    
+            end 
+        end
+        if (State == 1) begin
         if( (r11_active_x >= iw11_x_pos && r11_active_x < (iw11_x_pos + CursorSize)) && (r11_active_y >= iw11_y_pos && r11_active_y < (iw11_y_pos + CursorSize))  ) begin
             
             r4_red   <= 0;      
@@ -433,7 +486,8 @@ module svga(
             r4_red   <= iw4_red;      
             r4_green <= iw4_green;    
             r4_blue  <= iw4_blue;    
-        end           
+        end    
+        end       
     end
     
     //*****************************************************************
@@ -475,4 +529,8 @@ module svga(
         end
     end
     
+
+    assign ow11_curr_pixel_x = r11_active_x;
+    assign ow11_curr_pixel_y = r11_active_y;
+
 endmodule
